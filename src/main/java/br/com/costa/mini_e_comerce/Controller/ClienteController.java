@@ -1,5 +1,6 @@
 package br.com.costa.mini_e_comerce.Controller;
 
+import br.com.costa.mini_e_comerce.DataBase.Model.ClienteModel;
 import br.com.costa.mini_e_comerce.DataBase.ModelDto.ClienteModelDto;
 import br.com.costa.mini_e_comerce.Services.ClienteService;
 import jakarta.validation.Valid;
@@ -27,8 +28,8 @@ public class ClienteController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public void listarClientes() {
-        clienteService.findAll();
+    public List<ClienteModel> listarClientes() {
+       return clienteService.listarTodosClientes();
     }
 
 }

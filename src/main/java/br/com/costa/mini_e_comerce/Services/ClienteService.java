@@ -18,12 +18,12 @@ public class ClienteService {
     private final IClienteRepository clienteRepository;
 
     public void createCliente(@Valid ClienteModelDto clienteModelDto) {
-//        ClienteModel cliente = clienteRepository.findByEmail(clienteModelDto.getEmail())
-//                .orElse(null);
-//
-//        if (cliente != null) {
-//
-//        }
+        ClienteModel cliente = clienteRepository.findByEmail(clienteModelDto.getEmail())
+                .orElse(null);
+
+        if (cliente != null) {
+
+        }
 
         clienteRepository.save(ClienteModel.builder()
                 .nome(clienteModelDto.getNome())
@@ -31,7 +31,7 @@ public class ClienteService {
                 .build());
     }
 
-    public List<ClienteModel> findAll() {
+    public List<ClienteModel> listarTodosClientes() {
       return   clienteRepository.findAll();
     }
 }
