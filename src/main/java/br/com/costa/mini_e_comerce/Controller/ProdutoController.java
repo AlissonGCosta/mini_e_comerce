@@ -6,9 +6,11 @@ import br.com.costa.mini_e_comerce.Services.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/produtos")
@@ -28,5 +30,11 @@ public class ProdutoController {
     @ResponseStatus(HttpStatus.OK)
     public List<ProdutoModel> listarProdutos() {
         return produtoService.listarProdutos();
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProdutoModel atualizarProduto(@PathVariable UUID id, @Valid @RequestBody ProdutoModelDto produtoModel) {
+        return produtoService.alterarProduto(id, produtoModel);
     }
 }
