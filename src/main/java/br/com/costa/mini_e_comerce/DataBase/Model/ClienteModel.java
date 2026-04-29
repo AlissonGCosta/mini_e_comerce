@@ -28,6 +28,7 @@ public class ClienteModel {
     @Column(nullable = false, unique = true)
     private String email;
 
+
     @OneToMany(mappedBy = "cliente")
     private List<PedidoModel> pedidos;
 

@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
+import java.util.UUID;
+
 @Builder
 @Getter
 @Setter
@@ -14,12 +16,15 @@ import lombok.*;
 @NoArgsConstructor
 public class PedidoModelDto {
 
-    @NotBlank
-    private String dataCriacao;
+    @NotNull
+    private UUID clienteId;
+
+   @NotNull
+   private Integer quantidade;
+
 
     @NotBlank
     private String status;
 
-    @NotNull
-    private Integer totalPedido;
+
 }
