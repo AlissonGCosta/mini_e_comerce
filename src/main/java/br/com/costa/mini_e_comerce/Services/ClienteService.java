@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +29,13 @@ public class ClienteService {
 
         }
 
+
+
         clienteRepository.save(ClienteModel.builder()
                 .nome(clienteModelDto.getNome())
                 .email(clienteModelDto.getEmail())
                 .build());
+
 
 
     }

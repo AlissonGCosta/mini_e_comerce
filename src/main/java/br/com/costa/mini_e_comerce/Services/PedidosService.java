@@ -12,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,22 +24,31 @@ public class PedidosService {
     private final IClienteRepository clienteRepository;
 
     public void createPedido(PedidoModelDto pedidoModelDto) {
-        ClienteModel pedidoClienteId = clienteRepository.findById(pedidoModelDto.getClienteId())
+        ClienteModel cliente = clienteRepository.findById(pedidoModelDto.getClienteId())
                 .orElseThrow(() -> new RuntimeException("cliente nao encontrado"));
 
 
+
         PedidoModel pedido = PedidoModel.builder()
-                .cliente(pedidoClienteId)
+                .cliente(cliente)
                 .status(pedidoModelDto.getStatus())
                 .dataCriacao(LocalDate.now())
-                .totalPedido(pedidoModelDto.getQuantidade())
                 .build();
 
-        pedidoRepository.save(pedido);
+        cliente.adicionarPedido(pedido);
 
-        pedido.setCliente(pedidoClienteId);
+        clienteRepository.save(cliente);
 
 
+
+    }
+
+    public List<PedidoModel> listarTodosPedidos() {
+        return pedidoRepository.findAll();
+    }
+
+    public Optional<PedidoModel> listarpedidosPorId(UUID uuid) {
+        return pedidoRepository.findById(uuid);
     }
 }
 

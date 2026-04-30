@@ -34,6 +34,8 @@ public class ProdutoService {
 
     public ProdutoModel alterarProduto(UUID id, ProdutoModelDto produtoDto){
 
+
+
         ProdutoModel novoProduto = iProdutoRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 

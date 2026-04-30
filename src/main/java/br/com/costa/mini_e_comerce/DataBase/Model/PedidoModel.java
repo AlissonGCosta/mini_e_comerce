@@ -1,5 +1,6 @@
 package br.com.costa.mini_e_comerce.DataBase.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,12 +30,11 @@ public class PedidoModel {
     @Column(nullable = false)
     private String status;
 
-    @Column(nullable = false, name = "total_pedido" )
-    private Integer totalPedido;
 
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonBackReference
     private ClienteModel cliente;
 
     @OneToMany(mappedBy = "pedido")

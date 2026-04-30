@@ -1,10 +1,12 @@
 package br.com.costa.mini_e_comerce.DataBase.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,8 +31,14 @@ public class ClienteModel {
     private String email;
 
 
-    @OneToMany(mappedBy = "cliente")
-    private List<PedidoModel> pedidos;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<PedidoModel> pedidos = new ArrayList<>();
+
+    public void adicionarPedido(PedidoModel pedido) {
+        this.pedidos.add(pedido);
+    }
+
 
 
 }
