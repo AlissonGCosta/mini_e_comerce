@@ -1,11 +1,13 @@
 package br.com.costa.mini_e_comerce.DataBase.ModelDto;
 
 
-import jakarta.persistence.Entity;
+
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.math.BigDecimal;
+
+import java.util.UUID;
 
 
 @Builder
@@ -15,12 +17,16 @@ import java.math.BigDecimal;
 @Setter
 public class ItemPedidoModelDto {
 
+    @NotBlank
+    private String nomeProduto;
+
+    @NotNull
+    private UUID pedidoId;
+
     @NotNull
     private Integer quantidade;
 
-    @NotNull
-    private BigDecimal preco;
 
-    @NotNull
-    private BigDecimal subTotal;
+
+
 }

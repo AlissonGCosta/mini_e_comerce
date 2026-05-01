@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +39,10 @@ public class PedidoModel {
     private ClienteModel cliente;
 
     @OneToMany(mappedBy = "pedido")
-    private List<ItemPedidoModel> itens;
+    private List<ItemPedidoModel> itens = new ArrayList<>();
+
+    public void adcionarItem(ItemPedidoModel item) {
+        this.itens.add(item);
+    }
 
 }

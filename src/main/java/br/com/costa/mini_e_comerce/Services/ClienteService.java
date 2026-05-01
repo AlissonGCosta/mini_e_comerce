@@ -10,16 +10,17 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class ClienteService {
 
     private final IClienteRepository clienteRepository;
-    private final IPedidoRepository pedidoRepository;
 
     public void createCliente(@Valid ClienteModelDto clienteModelDto) {
         ClienteModel cliente = clienteRepository.findByEmail(clienteModelDto.getEmail())
