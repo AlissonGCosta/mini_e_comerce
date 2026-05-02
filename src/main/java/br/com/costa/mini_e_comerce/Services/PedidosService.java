@@ -5,6 +5,7 @@ import br.com.costa.mini_e_comerce.DataBase.Model.PedidoModel;
 import br.com.costa.mini_e_comerce.DataBase.Model.Repository.IClienteRepository;
 import br.com.costa.mini_e_comerce.DataBase.Model.Repository.IPedidoRepository;
 import br.com.costa.mini_e_comerce.DataBase.Model.Repository.IProdutoRepository;
+import br.com.costa.mini_e_comerce.DataBase.ModelDto.AlterarStatusPedidoDto;
 import br.com.costa.mini_e_comerce.DataBase.ModelDto.PedidoModelDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,16 +52,14 @@ public class PedidosService {
         return pedidoRepository.findById(uuid);
     }
 
-    public PedidoModel alterarStatusPedidosPorId(UUID id, PedidoModelDto pedidoModelDto) {
-        ClienteModel cliente = clienteRepository.findById(pedidoModelDto.getClienteId())
-                .orElseThrow(() -> new RuntimeException("cliente nao encontrado"));
+    public PedidoModel alterarStatusPedidosPorId(UUID id, AlterarStatusPedidoDto alterarStatusPedidoDto) {
 
         PedidoModel pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("pedido nao encontrado"));
 
-        pedido.setStatus(pedidoModelDto.getStatus());
-        pedido.setId(pedido.getId());
-        pedido.setCliente(cliente);
+        pedido.setStatus(alterarStatusPedidoDto.getStatus());
+
+
 
         return pedidoRepository.save(pedido);
 

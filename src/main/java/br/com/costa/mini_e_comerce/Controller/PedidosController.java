@@ -1,6 +1,7 @@
 package br.com.costa.mini_e_comerce.Controller;
 
 import br.com.costa.mini_e_comerce.DataBase.Model.PedidoModel;
+import br.com.costa.mini_e_comerce.DataBase.ModelDto.AlterarStatusPedidoDto;
 import br.com.costa.mini_e_comerce.DataBase.ModelDto.PedidoModelDto;
 import br.com.costa.mini_e_comerce.Services.PedidosService;
 import jakarta.validation.Valid;
@@ -38,9 +39,9 @@ public class PedidosController {
     }
 
     @PatchMapping("/{id}/status")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK  )
 
-    public PedidoModel alterarStatus(@PathVariable UUID id, @Valid @RequestBody PedidoModelDto pedidoModelDto) {
-        return pedidosService.alterarStatusPedidosPorId(id, pedidoModelDto);
+    public PedidoModel alterarStatus(@PathVariable UUID id, @Valid @RequestBody AlterarStatusPedidoDto alterarStatusPedidoDto) {
+        return pedidosService.alterarStatusPedidosPorId(id, alterarStatusPedidoDto);
     }
 }
