@@ -1,5 +1,6 @@
 package br.com.costa.mini_e_comerce.DataBase.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,11 +31,15 @@ public class ItemPedidoModel {
     private BigDecimal subTotal;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "pedido_id", nullable = false)
     private PedidoModel pedido;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "produto_id", nullable = false)
     private ProdutoModel produto;
+
+
 
 }

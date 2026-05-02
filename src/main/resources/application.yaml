@@ -2,6 +2,10 @@ spring:
   application:
     name: mini_e_comerce
 
+  Jackson:
+    serialization:
+      indent_output: true
+
   datasource:
     url: jdbc:mysql://localhost:3306/miniEcomerce?createDatabaseIfNotExist=true
     username: ${DATABASE_USERNAME}

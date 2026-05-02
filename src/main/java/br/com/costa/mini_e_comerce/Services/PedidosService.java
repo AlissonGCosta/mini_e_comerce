@@ -50,5 +50,23 @@ public class PedidosService {
     public Optional<PedidoModel> listarpedidosPorId(UUID uuid) {
         return pedidoRepository.findById(uuid);
     }
+
+    public PedidoModel alterarStatusPedidosPorId(UUID id, PedidoModelDto pedidoModelDto) {
+        ClienteModel cliente = clienteRepository.findById(pedidoModelDto.getClienteId())
+                .orElseThrow(() -> new RuntimeException("cliente nao encontrado"));
+
+        PedidoModel pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("pedido nao encontrado"));
+
+        pedido.setStatus(pedidoModelDto.getStatus());
+        pedido.setId(pedido.getId());
+        pedido.setCliente(cliente);
+
+        return pedidoRepository.save(pedido);
+
+
+
+
+    }
 }
 

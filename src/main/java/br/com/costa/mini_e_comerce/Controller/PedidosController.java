@@ -36,4 +36,11 @@ public class PedidosController {
     public Optional<PedidoModel> listarPedidoPorID(@PathVariable UUID id){
         return pedidosService.listarpedidosPorId(id);
     }
+
+    @PatchMapping("/{id}/status")
+    @ResponseStatus(HttpStatus.CREATED)
+
+    public PedidoModel alterarStatus(@PathVariable UUID id, @Valid @RequestBody PedidoModelDto pedidoModelDto) {
+        return pedidosService.alterarStatusPedidosPorId(id, pedidoModelDto);
+    }
 }

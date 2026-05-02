@@ -1,6 +1,7 @@
 package br.com.costa.mini_e_comerce.DataBase.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,12 +34,14 @@ public class PedidoModel {
 
 
 
+
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     @JsonBackReference
     private ClienteModel cliente;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ItemPedidoModel> itens = new ArrayList<>();
 
     public void adcionarItem(ItemPedidoModel item) {

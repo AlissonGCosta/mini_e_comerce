@@ -33,10 +33,10 @@ public class ProdutoModel {
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<ItemPedidoModel> itens = new ArrayList<>();
+    private List<ItemPedidoModel> listaProdutosEmPedido = new ArrayList<>();
 
-    public void  adcionarItem(ItemPedidoModel item) {
-        this.itens.add(item);
+    public void  adcionarItemProduto(ItemPedidoModel item) {
+        this.listaProdutosEmPedido.add(item);
     }
 
 }

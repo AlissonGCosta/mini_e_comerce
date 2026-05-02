@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Validated
@@ -37,9 +39,14 @@ public class ItemPedidoService {
                 .build();
 
         pedido.adcionarItem(ItemPedido);
+        produto.adcionarItemProduto(ItemPedido);
 
 
         itemPedidoRepository.save(ItemPedido);
 
+    }
+
+    public List<ItemPedidoModel> listarTodosPedidos(){
+        return itemPedidoRepository.findAll();
     }
 }
