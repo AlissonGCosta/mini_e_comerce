@@ -1,0 +1,20 @@
+package br.com.costa.mini_e_comerce.cliente.dtos.request;
+
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ClienteModelDto {
+
+    @NotBlank
+    private String nome;
+
+    @NotBlank
+    private String email;
+}
