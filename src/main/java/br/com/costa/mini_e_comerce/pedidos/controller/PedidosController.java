@@ -1,6 +1,7 @@
 package br.com.costa.mini_e_comerce.pedidos.controller;
 
 import br.com.costa.mini_e_comerce.pedidos.dto.response.AlterarStatusPedidoDto;
+import br.com.costa.mini_e_comerce.pedidos.dto.response.ListarPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.model.PedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.dto.request.PedidoModelDto;
 import br.com.costa.mini_e_comerce.pedidos.service.PedidosService;
@@ -28,7 +29,7 @@ public class PedidosController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<PedidoModel> listarPedidos() {
+    public List<ListarPedidoDto> listarPedidos() {
         return pedidosService.listarTodosPedidos();
     }
 

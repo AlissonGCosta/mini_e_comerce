@@ -27,14 +27,11 @@ public class PedidoModel {
     private UUID id;
 
 
-
     @Column(nullable = false, name = "data_criada")
     private LocalDate dataCriacao;
 
     @Column(nullable = false)
     private String status;
-
-
 
 
     @ManyToOne

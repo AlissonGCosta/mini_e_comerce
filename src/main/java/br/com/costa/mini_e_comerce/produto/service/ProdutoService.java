@@ -1,5 +1,8 @@
 package br.com.costa.mini_e_comerce.produto.service;
 
+import br.com.costa.mini_e_comerce.produto.dto.request.ProdutoUpdateRequest;
+import br.com.costa.mini_e_comerce.produto.dto.response.ListarProdutoDto;
+import br.com.costa.mini_e_comerce.produto.dto.response.ProdutoResponse;
 import br.com.costa.mini_e_comerce.produto.model.ProdutoModel;
 import br.com.costa.mini_e_comerce.produto.dto.request.ProdutoModelDto;
 import br.com.costa.mini_e_comerce.produto.repository.IProdutoRepository;
@@ -25,25 +28,37 @@ public class ProdutoService {
                 .build());
     }
 
-    public List<ProdutoModel> listarProdutos(){
+    public List<ListarProdutoDto> listarProdutos(){
 
-        return iProdutoRepository.findAll();
+        return iProdutoRepository.findAll()
+                .stream()
+                .map(prdouto -> ListarProdutoDto.builder()
+                        .id(prdouto.getId())
+                        .nome(prdouto.getNome())
+                        .preco(prdouto.getPreco())
+                        .quantidadeEstoque(prdouto.getQuantidadeEstoque())
+                        .listaProdutosEmPedido(prdouto.getListaProdutosEmPedido())
+                        .build())
+                .toList();
     }
 
 
-    public ProdutoModel alterarProduto(UUID id, ProdutoModelDto produtoDto){
+    public ProdutoResponse atualizarProduto(UUID id, ProdutoUpdateRequest request){
 
 
 
         ProdutoModel novoProduto = iProdutoRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-                novoProduto.setNome(produtoDto.getNome());
-                novoProduto.setPreco(produtoDto.getPreco());
-                novoProduto.setQuantidadeEstoque(produtoDto.getQuantidadeEstoque());
+                novoProduto.setNome(request.nome());
+                novoProduto.setPreco(request.preco());
+                novoProduto.setQuantidadeEstoque(request.estoque());
 
 
-        return iProdutoRepository.save(novoProduto) ;
+                ProdutoModel salvoProduto = iProdutoRepository.save(novoProduto);
+
+
+        return new ProdutoResponse(salvoProduto.getId(), salvoProduto.getNome(), salvoProduto.getPreco(), salvoProduto.getQuantidadeEstoque());
     }
 
 }

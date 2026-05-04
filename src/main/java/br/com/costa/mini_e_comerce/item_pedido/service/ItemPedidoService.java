@@ -1,5 +1,6 @@
 package br.com.costa.mini_e_comerce.item_pedido.service;
 
+import br.com.costa.mini_e_comerce.item_pedido.dtos.respone.ListarItemPedidoDto;
 import br.com.costa.mini_e_comerce.item_pedido.model.ItemPedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.model.PedidoModel;
 import br.com.costa.mini_e_comerce.produto.model.ProdutoModel;
@@ -12,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +37,7 @@ public class ItemPedidoService {
                 .produto(produto)
                 .pedido(pedido)
                 .quantidade(itemPedidoModelDto.getQuantidade())
-                .subTotal(produto.getPreco())
+                .subTotal(produto.getPreco().multiply(BigDecimal.valueOf(itemPedidoModelDto.getQuantidade())))
                 .preco(produto.getPreco())
                 .build();
 
@@ -46,7 +49,26 @@ public class ItemPedidoService {
 
     }
 
-    public List<ItemPedidoModel> listarTodosPedidos(){
-        return itemPedidoRepository.findAll();
+    public List<ListarItemPedidoDto> listarTodosPedidos(){
+
+        return itemPedidoRepository.findAll()
+                .stream()
+                .map(item -> ListarItemPedidoDto.builder()
+                        .id(item.getId())
+                        .quantidade(item.getQuantidade())
+                        .preco(item.getPreco())
+                        .subTotal(item.getSubTotal())
+                        .pedidoId(item.getPedido().getId())
+                        .produtoId(item.getProduto().getId())
+                        .produtoNome(item.getProduto().getNome())
+                        .build())
+                .toList();
+    }
+
+    public void deletarItemPedido(@Valid UUID itemPedidoId) {
+        if(!itemPedidoRepository.existsById(itemPedidoId)) {
+            throw new RuntimeException("item pedido nao encontrado");
+        }
+        itemPedidoRepository.deleteById(itemPedidoId);
     }
 }
