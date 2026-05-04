@@ -8,6 +8,7 @@ import br.com.costa.mini_e_comerce.pedidos.service.PedidosService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,14 +36,13 @@ public class PedidosController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<PedidoModel> listarPedidoPorID(@PathVariable UUID id){
-        return pedidosService.listarpedidosPorId(id);
+    public ResponseEntity<ListarPedidoDto> listarPedidoPorID(@PathVariable UUID id){
+        return ResponseEntity.ok(pedidosService.listarpedidosPorId(id));
     }
 
     @PatchMapping("/{id}/status")
     @ResponseStatus(HttpStatus.OK  )
-
-    public PedidoModel alterarStatus(@PathVariable UUID id, @Valid @RequestBody AlterarStatusPedidoDto alterarStatusPedidoDto) {
-        return pedidosService.alterarStatusPedidosPorId(id, alterarStatusPedidoDto);
+    public void alterarStatus(@PathVariable UUID id, @Valid @RequestBody AlterarStatusPedidoDto alterarStatusPedidoDto) {
+        pedidosService.alterarStatusPedidosPorId(id, alterarStatusPedidoDto);
     }
 }
