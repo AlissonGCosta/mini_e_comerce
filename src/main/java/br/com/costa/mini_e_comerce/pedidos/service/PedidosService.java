@@ -2,7 +2,9 @@ package br.com.costa.mini_e_comerce.pedidos.service;
 
 import br.com.costa.mini_e_comerce.cliente.model.ClienteModel;
 import br.com.costa.mini_e_comerce.cliente.repository.IClienteRepository;
+import br.com.costa.mini_e_comerce.item_pedido.dtos.respone.ListarItemPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.AlterarStatusPedidoDto;
+import br.com.costa.mini_e_comerce.pedidos.dto.response.ListarPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.repository.IPedidoRepository;
 import br.com.costa.mini_e_comerce.pedidos.model.PedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.dto.request.PedidoModelDto;
@@ -38,13 +40,25 @@ public class PedidosService {
         cliente.adicionarPedido(pedido);
 
         clienteRepository.save(cliente);
-
+        pedidoRepository.save(pedido);
 
 
     }
 
-    public List<PedidoModel> listarTodosPedidos() {
-        return pedidoRepository.findAll();
+    public List<ListarPedidoDto> listarTodosPedidos() {
+
+        return pedidoRepository.findAll()
+                .stream()
+                .map(pedido -> ListarPedidoDto.builder()
+                        .id(pedido.getId())
+                        .status(pedido.getStatus())
+                        .dataPedido(pedido.getDataCriacao())
+                        .itens(pedido.getItens())
+                        .build())
+                .toList();
+
+
+
     }
 
     public Optional<PedidoModel> listarpedidosPorId(UUID uuid) {

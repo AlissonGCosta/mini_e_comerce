@@ -1,11 +1,15 @@
 package br.com.costa.mini_e_comerce.produto.controller;
 
+import br.com.costa.mini_e_comerce.produto.dto.request.ProdutoUpdateRequest;
+import br.com.costa.mini_e_comerce.produto.dto.response.ListarProdutoDto;
+import br.com.costa.mini_e_comerce.produto.dto.response.ProdutoResponse;
 import br.com.costa.mini_e_comerce.produto.model.ProdutoModel;
 import br.com.costa.mini_e_comerce.produto.service.ProdutoService;
 import br.com.costa.mini_e_comerce.produto.dto.request.ProdutoModelDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,13 +31,15 @@ public class ProdutoController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProdutoModel> listarProdutos() {
+    public List<ListarProdutoDto> listarProdutos() {
         return produtoService.listarProdutos();
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProdutoModel atualizarProduto(@PathVariable UUID id, @Valid @RequestBody ProdutoModelDto produtoModel) {
-        return produtoService.alterarProduto(id, produtoModel);
+    public ResponseEntity<ProdutoResponse> atualizarProduto(@PathVariable UUID id, @Valid @RequestBody ProdutoUpdateRequest request) {
+
+        ProdutoResponse response = produtoService.atualizarProduto(id, request);
+        return ResponseEntity.ok(response);
     }
 }
