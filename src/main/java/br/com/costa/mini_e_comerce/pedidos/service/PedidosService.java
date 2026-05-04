@@ -2,19 +2,18 @@ package br.com.costa.mini_e_comerce.pedidos.service;
 
 import br.com.costa.mini_e_comerce.cliente.model.ClienteModel;
 import br.com.costa.mini_e_comerce.cliente.repository.IClienteRepository;
-import br.com.costa.mini_e_comerce.item_pedido.dtos.respone.ListarItemPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.AlterarStatusPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.ListarPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.repository.IPedidoRepository;
 import br.com.costa.mini_e_comerce.pedidos.model.PedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.dto.request.PedidoModelDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -61,20 +60,32 @@ public class PedidosService {
 
     }
 
-    public Optional<PedidoModel> listarpedidosPorId(UUID uuid) {
-        return pedidoRepository.findById(uuid);
+    public ListarPedidoDto listarpedidosPorId(UUID uuid) {
+
+        PedidoModel pedido = pedidoRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("pedido nao encontrado "+ uuid));
+
+        return ListarPedidoDtoResponse(pedido);
     }
 
-    public PedidoModel alterarStatusPedidosPorId(UUID id, AlterarStatusPedidoDto alterarStatusPedidoDto) {
+    private ListarPedidoDto ListarPedidoDtoResponse(PedidoModel pedidoModel) {
+        return ListarPedidoDto.builder()
+                .id(pedidoModel.getId())
+                .status(pedidoModel.getStatus())
+                .dataPedido(pedidoModel.getDataCriacao())
+                .itens(pedidoModel.getItens())
+                .build();
+
+    }
+
+    public void alterarStatusPedidosPorId(UUID id, AlterarStatusPedidoDto alterarStatusPedidoDto) {
 
         PedidoModel pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("pedido nao encontrado"));
 
         pedido.setStatus(alterarStatusPedidoDto.getStatus());
 
-
-
-        return pedidoRepository.save(pedido);
+        pedidoRepository.save(pedido);
 
 
 
