@@ -2,6 +2,7 @@ package br.com.costa.mini_e_comerce.pedidos.service;
 
 import br.com.costa.mini_e_comerce.cliente.model.ClienteModel;
 import br.com.costa.mini_e_comerce.cliente.repository.IClienteRepository;
+import br.com.costa.mini_e_comerce.item_pedido.model.ItemPedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.AlterarStatusPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.ListarPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.repository.IPedidoRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -29,14 +31,19 @@ public class PedidosService {
                 .orElseThrow(() -> new RuntimeException("cliente nao encontrado"));
 
 
-
         PedidoModel pedido = PedidoModel.builder()
                 .cliente(cliente)
                 .status(pedidoModelDto.getStatus())
                 .dataCriacao(LocalDate.now())
+                .total(BigDecimal.ZERO)
                 .build();
 
         cliente.adicionarPedido(pedido);
+
+        BigDecimal total = pedido.getItens().stream()
+                        .map(ItemPedidoModel::getSubTotal)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+        pedido.setTotal(total);
 
         clienteRepository.save(cliente);
         pedidoRepository.save(pedido);
@@ -73,6 +80,7 @@ public class PedidosService {
                 .id(pedidoModel.getId())
                 .status(pedidoModel.getStatus())
                 .dataPedido(pedidoModel.getDataCriacao())
+                .total(pedidoModel.getTotal())
                 .itens(pedidoModel.getItens())
                 .build();
 

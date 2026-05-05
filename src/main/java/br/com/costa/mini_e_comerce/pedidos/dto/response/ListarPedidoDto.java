@@ -4,6 +4,7 @@ import br.com.costa.mini_e_comerce.cliente.model.ClienteModel;
 import br.com.costa.mini_e_comerce.item_pedido.model.ItemPedidoModel;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ListarPedidoDto {
     private LocalDate dataPedido;
     private String status;
     private List<ItemPedidoModel> itens;
+    private BigDecimal total;
 
 
 
