@@ -27,8 +27,19 @@ public class ItemPedidoService {
     private final IPedidoRepository pedidoRepository;
 
     public void crateItemPedido(@Valid ItemPedidoModelDto itemPedidoModelDto) {
+
+
+
         ProdutoModel produto = produtoRepository.findByNome(itemPedidoModelDto.getNomeProduto())
                 .orElseThrow(() -> new RuntimeException("produto nao encontrado"));
+
+        if(itemPedidoModelDto.getQuantidade() <= 0){
+            throw new RuntimeException("Quantidade Deve ser maior que zero");
+        }
+
+        if(produto.getQuantidadeEstoque() < itemPedidoModelDto.getQuantidade()){
+            throw new RuntimeException("Estoque insuficiente");
+        }
 
         PedidoModel pedido = pedidoRepository.findById(itemPedidoModelDto.getPedidoId())
                 .orElseThrow(() -> new RuntimeException("pedido nao encontrado"));
@@ -43,9 +54,11 @@ public class ItemPedidoService {
 
         pedido.adcionarItem(ItemPedido);
         produto.adcionarItemProduto(ItemPedido);
+        produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - ItemPedido.getQuantidade());
+        pedido.setStatus("ABERTO");
 
-
-        itemPedidoRepository.save(ItemPedido);
+        pedidoRepository.save(pedido);
+        produtoRepository.save(produto);
 
     }
 
