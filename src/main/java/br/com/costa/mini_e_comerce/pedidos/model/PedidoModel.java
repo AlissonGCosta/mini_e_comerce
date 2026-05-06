@@ -30,7 +30,6 @@ public class PedidoModel {
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal total;
 
-
     @Column(nullable = false, name = "data_criada")
     private LocalDate dataCriacao;
 
@@ -43,7 +42,7 @@ public class PedidoModel {
     @JsonBackReference
     private ClienteModel cliente;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pedido", orphanRemoval = true)
     @JsonManagedReference
     private List<ItemPedidoModel> itens = new ArrayList<>();
 

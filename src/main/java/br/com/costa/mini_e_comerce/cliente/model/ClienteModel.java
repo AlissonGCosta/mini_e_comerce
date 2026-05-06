@@ -32,7 +32,7 @@ public class ClienteModel {
     private String email;
 
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cliente",  orphanRemoval = true)
     @JsonManagedReference
     private List<PedidoModel> pedidos = new ArrayList<>();
 

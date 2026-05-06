@@ -20,8 +20,9 @@ public class ListarPedidoDto {
     private UUID id;
     private LocalDate dataPedido;
     private String status;
-    private List<ItemPedidoModel> itens;
     private BigDecimal total;
+    private List<ItemPedidoModel> itens;
+
 
 
 
