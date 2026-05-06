@@ -33,17 +33,15 @@ public class PedidosService {
 
         PedidoModel pedido = PedidoModel.builder()
                 .cliente(cliente)
-                .status(pedidoModelDto.getStatus())
-                .dataCriacao(LocalDate.now())
+                .status("CRIADO")
                 .total(BigDecimal.ZERO)
+                .dataCriacao(LocalDate.now())
+
                 .build();
 
         cliente.adicionarPedido(pedido);
 
-        BigDecimal total = pedido.getItens().stream()
-                        .map(ItemPedidoModel::getSubTotal)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-        pedido.setTotal(total);
+
 
         clienteRepository.save(cliente);
         pedidoRepository.save(pedido);
@@ -59,6 +57,7 @@ public class PedidosService {
                         .id(pedido.getId())
                         .status(pedido.getStatus())
                         .dataPedido(pedido.getDataCriacao())
+                        .total(pedido.getTotal())
                         .itens(pedido.getItens())
                         .build())
                 .toList();
@@ -79,8 +78,8 @@ public class PedidosService {
         return ListarPedidoDto.builder()
                 .id(pedidoModel.getId())
                 .status(pedidoModel.getStatus())
-                .dataPedido(pedidoModel.getDataCriacao())
                 .total(pedidoModel.getTotal())
+                .dataPedido(pedidoModel.getDataCriacao())
                 .itens(pedidoModel.getItens())
                 .build();
 

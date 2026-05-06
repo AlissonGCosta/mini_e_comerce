@@ -9,7 +9,10 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Table(name = "item_pedido")
+@Table(name = "item_pedido",
+        uniqueConstraints = {
+        @UniqueConstraint(name = "uk_item_pedido_pedido_produto", columnNames = {"pedido_id","produto_id"})
+        })
 @Entity
 @Getter
 @Setter

@@ -11,6 +11,7 @@ import br.com.costa.mini_e_comerce.item_pedido.dtos.request.ItemPedidoModelDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ public class ItemPedidoService {
     private final IProdutoRepository produtoRepository;
     private final IPedidoRepository pedidoRepository;
 
+    @Transactional
     public void crateItemPedido(@Valid ItemPedidoModelDto itemPedidoModelDto) {
 
 
@@ -57,8 +59,12 @@ public class ItemPedidoService {
         produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - ItemPedido.getQuantidade());
         pedido.setStatus("ABERTO");
 
-        pedidoRepository.save(pedido);
-        produtoRepository.save(produto);
+        BigDecimal total = pedido.getItens().stream()
+                .map(ItemPedidoModel::getSubTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        pedido.setTotal(total);
+
+        itemPedidoRepository.save(ItemPedido);
 
     }
 
@@ -83,5 +89,9 @@ public class ItemPedidoService {
             throw new RuntimeException("item pedido nao encontrado");
         }
         itemPedidoRepository.deleteById(itemPedidoId);
+    }
+
+    public void deletarTudoItemPedido(){
+        itemPedidoRepository.deleteAll();
     }
 }

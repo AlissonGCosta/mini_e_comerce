@@ -38,4 +38,10 @@ public class ItemPedidoController {
         itemPedidoService.deletarItemPedido(id);
         return ResponseEntity.noContent().build();
     }
+
+//    @DeleteMapping("/deletartudo")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void deletarItemPedidos(){
+//        itemPedidoService.deletarTudoItemPedido();
+//    }
 }

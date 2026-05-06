@@ -32,7 +32,7 @@ public class ProdutoModel {
     @Column(nullable = false, name = "quantidade_em_estoque")
     private Integer quantidadeEstoque;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "produto", orphanRemoval = true)
     @JsonManagedReference
     private List<ItemPedidoModel> listaProdutosEmPedido = new ArrayList<>();
 
