@@ -5,6 +5,7 @@ import br.com.costa.mini_e_comerce.cliente.model.ClienteModel;
 import br.com.costa.mini_e_comerce.cliente.repository.IClienteRepository;
 import br.com.costa.mini_e_comerce.cliente.dtos.request.ClienteModelDto;
 import br.com.costa.mini_e_comerce.cliente.dtos.response.ListarClienteDto;
+import br.com.costa.mini_e_comerce.global.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,17 @@ public class ClienteService {
                 .orElse(null);
 
         if (cliente != null) {
-
+            throw new ResourceNotFoundException("Cliente já cadastrado com esse email");
         }
 
-
-
-        clienteRepository.save(ClienteModel.builder()
+        ClienteModel novoCliente = ClienteModel.builder()
                 .nome(clienteModelDto.getNome())
                 .email(clienteModelDto.getEmail())
-                .build());
+                .build();
+
+
+
+        clienteRepository.save(novoCliente);
 
 
     }

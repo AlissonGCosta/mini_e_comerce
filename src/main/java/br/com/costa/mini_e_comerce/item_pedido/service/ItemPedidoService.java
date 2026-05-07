@@ -1,5 +1,6 @@
 package br.com.costa.mini_e_comerce.item_pedido.service;
 
+import br.com.costa.mini_e_comerce.global.exception.ResourceNotFoundException;
 import br.com.costa.mini_e_comerce.item_pedido.dtos.respone.ListarItemPedidoDto;
 import br.com.costa.mini_e_comerce.item_pedido.model.ItemPedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.model.PedidoModel;
@@ -33,18 +34,18 @@ public class ItemPedidoService {
 
 
         ProdutoModel produto = produtoRepository.findByNome(itemPedidoModelDto.getNomeProduto())
-                .orElseThrow(() -> new RuntimeException("produto nao encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("produto nao encontrado"));
 
         if(itemPedidoModelDto.getQuantidade() <= 0){
-            throw new RuntimeException("Quantidade Deve ser maior que zero");
+            throw new ResourceNotFoundException("Quantidade Deve ser maior que zero");
         }
 
         if(produto.getQuantidadeEstoque() < itemPedidoModelDto.getQuantidade()){
-            throw new RuntimeException("Estoque insuficiente");
+            throw new ResourceNotFoundException("Estoque insuficiente");
         }
 
         PedidoModel pedido = pedidoRepository.findById(itemPedidoModelDto.getPedidoId())
-                .orElseThrow(() -> new RuntimeException("pedido nao encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("pedido nao encontrado"));
 
         ItemPedidoModel ItemPedido = ItemPedidoModel.builder()
                 .produto(produto)
@@ -86,7 +87,7 @@ public class ItemPedidoService {
 
     public void deletarItemPedido(@Valid UUID itemPedidoId) {
         if(!itemPedidoRepository.existsById(itemPedidoId)) {
-            throw new RuntimeException("item pedido nao encontrado");
+            throw new ResourceNotFoundException("item pedido nao encontrado");
         }
         itemPedidoRepository.deleteById(itemPedidoId);
     }
