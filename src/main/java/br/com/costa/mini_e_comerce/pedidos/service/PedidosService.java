@@ -2,6 +2,7 @@ package br.com.costa.mini_e_comerce.pedidos.service;
 
 import br.com.costa.mini_e_comerce.cliente.model.ClienteModel;
 import br.com.costa.mini_e_comerce.cliente.repository.IClienteRepository;
+import br.com.costa.mini_e_comerce.global.exception.ResourceNotFoundException;
 import br.com.costa.mini_e_comerce.item_pedido.model.ItemPedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.AlterarStatusPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.ListarPedidoDto;
@@ -28,7 +29,7 @@ public class PedidosService {
 
     public void createPedido(PedidoModelDto pedidoModelDto) {
         ClienteModel cliente = clienteRepository.findById(pedidoModelDto.getClienteId())
-                .orElseThrow(() -> new RuntimeException("cliente nao encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("cliente nao encontrado"));
 
 
         PedidoModel pedido = PedidoModel.builder()
@@ -69,7 +70,7 @@ public class PedidosService {
     public ListarPedidoDto listarpedidosPorId(UUID uuid) {
 
         PedidoModel pedido = pedidoRepository.findById(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("pedido nao encontrado "+ uuid));
+                .orElseThrow(() -> new ResourceNotFoundException("pedido nao encontrado "+ uuid));
 
         return ListarPedidoDtoResponse(pedido);
     }
@@ -88,7 +89,7 @@ public class PedidosService {
     public void alterarStatusPedidosPorId(UUID id, AlterarStatusPedidoDto alterarStatusPedidoDto) {
 
         PedidoModel pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("pedido nao encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("pedido nao encontrado"));
 
         pedido.setStatus(alterarStatusPedidoDto.getStatus());
 

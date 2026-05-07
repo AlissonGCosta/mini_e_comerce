@@ -37,7 +37,7 @@ public class ProdutoController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProdutoResponse> atualizarProduto(@PathVariable UUID id, @Valid @RequestBody ProdutoUpdateRequest request) {
+    public ResponseEntity<ProdutoResponse> atualizarProduto(@PathVariable UUID id, @Valid @RequestBody ProdutoUpdateRequest request) throws RuntimeException {
 
         ProdutoResponse response = produtoService.atualizarProduto(id, request);
         return ResponseEntity.ok(response);

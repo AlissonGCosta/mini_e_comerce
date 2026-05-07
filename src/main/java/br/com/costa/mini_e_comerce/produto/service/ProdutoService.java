@@ -1,5 +1,6 @@
 package br.com.costa.mini_e_comerce.produto.service;
 
+import br.com.costa.mini_e_comerce.global.exception.ResourceNotFoundException;
 import br.com.costa.mini_e_comerce.produto.dto.request.ProdutoUpdateRequest;
 import br.com.costa.mini_e_comerce.produto.dto.response.ListarProdutoDto;
 import br.com.costa.mini_e_comerce.produto.dto.response.ProdutoResponse;
@@ -46,13 +47,12 @@ public class ProdutoService {
     public ProdutoResponse atualizarProduto(UUID id, ProdutoUpdateRequest request){
 
 
-
         ProdutoModel novoProduto = iProdutoRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
                 novoProduto.setNome(request.nome());
                 novoProduto.setPreco(request.preco());
-                novoProduto.setQuantidadeEstoque(request.estoque());
+                novoProduto.setQuantidadeEstoque(request.quantidadeEstoque());
 
 
                 ProdutoModel salvoProduto = iProdutoRepository.save(novoProduto);

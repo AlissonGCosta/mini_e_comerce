@@ -5,6 +5,6 @@ import java.math.BigDecimal;
 public record ProdutoUpdateRequest(
         String nome,
         BigDecimal preco,
-        Integer estoque
+        Integer quantidadeEstoque
 ) {
 }
