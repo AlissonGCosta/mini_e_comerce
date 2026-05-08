@@ -7,6 +7,7 @@ import br.com.costa.mini_e_comerce.pedidos.dto.request.PedidoModelDto;
 import br.com.costa.mini_e_comerce.pedidos.service.PedidosService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +45,11 @@ public class PedidosController {
     @ResponseStatus(HttpStatus.OK  )
     public void alterarStatus(@PathVariable UUID id, @Valid @RequestBody AlterarStatusPedidoDto alterarStatusPedidoDto) {
         pedidosService.alterarStatusPedidosPorId(id, alterarStatusPedidoDto);
+    }
+
+    @GetMapping("/pg")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ListarPedidoDto> listarPedidosPorPagina(@RequestParam Integer page, @RequestParam Integer size) {
+        return pedidosService.listarItemPedidosPaginado(page, size);
     }
 }

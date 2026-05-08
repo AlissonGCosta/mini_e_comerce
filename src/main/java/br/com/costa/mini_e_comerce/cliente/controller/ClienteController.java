@@ -5,6 +5,7 @@ import br.com.costa.mini_e_comerce.cliente.dtos.response.ListarClienteDto;
 import br.com.costa.mini_e_comerce.cliente.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,15 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.OK)
     public List<ListarClienteDto> listarClientes() {
        return clienteService.listarTodosClientes();
+    }
+
+    @GetMapping("/pg")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ListarClienteDto> listarClientes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return clienteService.listarTodosClientesPaginado(page, size);
     }
 
 }

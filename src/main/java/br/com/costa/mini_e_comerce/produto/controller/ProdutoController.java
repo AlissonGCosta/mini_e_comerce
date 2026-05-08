@@ -8,6 +8,7 @@ import br.com.costa.mini_e_comerce.produto.service.ProdutoService;
 import br.com.costa.mini_e_comerce.produto.dto.request.ProdutoModelDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +42,14 @@ public class ProdutoController {
 
         ProdutoResponse response = produtoService.atualizarProduto(id, request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/pg")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ListarProdutoDto> listarProdutosPg(
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+       return produtoService.listarProdutosPaginado(page, size);
     }
 }
