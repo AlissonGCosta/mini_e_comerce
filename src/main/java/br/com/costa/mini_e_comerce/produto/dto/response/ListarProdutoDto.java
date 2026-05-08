@@ -20,4 +20,5 @@ public class ListarProdutoDto {
     private Integer quantidadeEstoque;
     private List<ItemPedidoModel> listaProdutosEmPedido;
 
+
 }

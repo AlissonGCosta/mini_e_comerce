@@ -1,6 +1,7 @@
 package br.com.costa.mini_e_comerce.produto.service;
 
 import br.com.costa.mini_e_comerce.global.exception.ResourceNotFoundException;
+import br.com.costa.mini_e_comerce.pedidos.dto.response.ListarPedidoDto;
 import br.com.costa.mini_e_comerce.produto.dto.request.ProdutoUpdateRequest;
 import br.com.costa.mini_e_comerce.produto.dto.response.ListarProdutoDto;
 import br.com.costa.mini_e_comerce.produto.dto.response.ProdutoResponse;
@@ -9,6 +10,10 @@ import br.com.costa.mini_e_comerce.produto.dto.request.ProdutoModelDto;
 import br.com.costa.mini_e_comerce.produto.repository.IProdutoRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,4 +66,11 @@ public class ProdutoService {
         return new ProdutoResponse(salvoProduto.getId(), salvoProduto.getNome(), salvoProduto.getPreco(), salvoProduto.getQuantidadeEstoque());
     }
 
-}
+    public Page<ListarProdutoDto> listarProdutosPaginado(int page, int linesPerPage){
+        Pageable pageable = PageRequest.of(page, linesPerPage, Sort.by(Sort.Direction.DESC, "id"));
+
+        return iProdutoRepository.findAll(pageable)
+                .map(p -> new ListarProdutoDto(p.getId(), p.getNome(), p.getPreco(), p.getQuantidadeEstoque(), p.getListaProdutosEmPedido()));
+
+
+}   }

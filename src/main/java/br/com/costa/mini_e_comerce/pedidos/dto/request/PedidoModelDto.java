@@ -18,12 +18,5 @@ public class PedidoModelDto {
     @NotNull
     private UUID clienteId;
 
-   @NotNull
-   private Integer quantidade;
-
-
-    @NotBlank
-    private String status;
-
 
 }

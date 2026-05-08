@@ -11,6 +11,9 @@ import br.com.costa.mini_e_comerce.pedidos.model.PedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.dto.request.PedidoModelDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -98,6 +101,13 @@ public class PedidosService {
 
 
 
+    }
+
+    public Page<ListarPedidoDto> listarItemPedidosPaginado(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dataCriacao"));
+
+        return pedidoRepository.findAll(pageRequest)
+                .map(pedido -> new ListarPedidoDto(pedido.getId(), pedido.getDataCriacao(), pedido.getStatus(), pedido.getTotal(), pedido.getItens()));
     }
 }
 

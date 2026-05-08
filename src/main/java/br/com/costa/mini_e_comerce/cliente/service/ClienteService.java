@@ -8,6 +8,10 @@ import br.com.costa.mini_e_comerce.cliente.dtos.response.ListarClienteDto;
 import br.com.costa.mini_e_comerce.global.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -52,5 +56,12 @@ public class ClienteService {
 
 
 
+    }
+
+    public Page<ListarClienteDto> listarTodosClientesPaginado(int page, int linesPerPage) {
+        Pageable pageable = PageRequest.of(page, linesPerPage, Sort.by(Sort.Direction.DESC, "id"));
+
+        return clienteRepository.findAll(pageable)
+                .map(c -> new ListarClienteDto(c.getId(), c.getNome(), c.getEmail(), c.getPedidos() ));
     }
 }
