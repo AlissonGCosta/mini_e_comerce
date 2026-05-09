@@ -3,6 +3,9 @@ package br.com.costa.mini_e_comerce.pedidos.service;
 import br.com.costa.mini_e_comerce.cliente.model.ClienteModel;
 import br.com.costa.mini_e_comerce.cliente.repository.IClienteRepository;
 import br.com.costa.mini_e_comerce.global.exception.ResourceNotFoundException;
+import br.com.costa.mini_e_comerce.item_pedido.dtos.request.ItemPedidoModelDto;
+import br.com.costa.mini_e_comerce.item_pedido.dtos.respone.ItemDoPedidoResponse;
+import br.com.costa.mini_e_comerce.item_pedido.dtos.respone.ListarItemPedidoDto;
 import br.com.costa.mini_e_comerce.item_pedido.model.ItemPedidoModel;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.AlterarStatusPedidoDto;
 import br.com.costa.mini_e_comerce.pedidos.dto.response.ListarPedidoDto;
@@ -62,7 +65,19 @@ public class PedidosService {
                         .status(pedido.getStatus())
                         .dataPedido(pedido.getDataCriacao())
                         .total(pedido.getTotal())
-                        .itens(pedido.getItens())
+                        .itens(pedido.getItens()
+                                .stream()
+                                .map(i -> new ItemDoPedidoResponse(
+                                        i.getId(),
+                                        i.getProduto().getId(),
+                                        i.getProduto().getNome(),
+                                        i.getQuantidade(),
+                                        i.getPreco(),
+                                        i.getSubTotal()
+
+                                ))
+                                .toList()
+                        )
                         .build())
                 .toList();
 
@@ -84,8 +99,21 @@ public class PedidosService {
                 .status(pedidoModel.getStatus())
                 .total(pedidoModel.getTotal())
                 .dataPedido(pedidoModel.getDataCriacao())
-                .itens(pedidoModel.getItens())
+                .itens(pedidoModel.getItens().stream()
+                        .map(i -> new ItemDoPedidoResponse(
+                                i.getId(),
+                                i.getProduto().getId(),
+                                i.getProduto().getNome(),
+                                i.getQuantidade(),
+                                i.getPreco(),
+                                i.getSubTotal()
+
+                        ))
+                        .toList()
+                )
                 .build();
+
+
 
     }
 
@@ -107,7 +135,22 @@ public class PedidosService {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dataCriacao"));
 
         return pedidoRepository.findAll(pageRequest)
-                .map(pedido -> new ListarPedidoDto(pedido.getId(), pedido.getDataCriacao(), pedido.getStatus(), pedido.getTotal(), pedido.getItens()));
-    }
+                .map(pedido -> new ListarPedidoDto(pedido.getId(), pedido.getDataCriacao(), pedido.getStatus(), pedido.getTotal(),
+                        pedido.getItens().stream()
+                        .map(i -> new ItemDoPedidoResponse(
+                                i.getId(),
+                                i.getProduto().getId(),
+                                i.getProduto().getNome(),
+                                i.getQuantidade(),
+                                i.getPreco(),
+                                i.getSubTotal()
+
+                        ))
+                        .toList())
+                );
+
+
+
+}
 }
 

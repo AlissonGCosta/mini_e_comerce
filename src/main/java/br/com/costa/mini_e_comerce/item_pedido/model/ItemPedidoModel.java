@@ -9,10 +9,12 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Table(name = "item_pedido",
-        uniqueConstraints = {
-        @UniqueConstraint(name = "uk_item_pedido_pedido_produto", columnNames = {"pedido_id","produto_id"})
+@Table(name = "item_pedido", uniqueConstraints = {
+        @UniqueConstraint(
+                name = "uk_item_pedido_pedido_produto",
+                columnNames = {"pedido_id", "produto_id"
         })
+})
 @Entity
 @Getter
 @Setter
@@ -25,6 +27,8 @@ public class ItemPedidoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    private String nomeProduto;
 
     @Column(nullable = false)
     private Integer quantidade;
@@ -44,7 +48,5 @@ public class ItemPedidoModel {
     @JsonBackReference
     @JoinColumn(name = "produto_id", nullable = false)
     private ProdutoModel produto;
-
-
 
 }

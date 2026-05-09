@@ -1,10 +1,12 @@
 package br.com.costa.mini_e_comerce.item_pedido.dtos.respone;
 
+import br.com.costa.mini_e_comerce.item_pedido.dtos.request.ItemPedidoModelDto;
 import br.com.costa.mini_e_comerce.pedidos.model.PedidoModel;
 import br.com.costa.mini_e_comerce.produto.model.ProdutoModel;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -18,6 +20,7 @@ public class ListarItemPedidoDto {
     private Integer quantidade;
     private BigDecimal preco;
     private BigDecimal subTotal;
+
 
     private UUID pedidoId;
     private UUID produtoId;
