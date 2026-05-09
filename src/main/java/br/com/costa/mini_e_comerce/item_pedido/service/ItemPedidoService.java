@@ -47,18 +47,22 @@ public class ItemPedidoService {
         PedidoModel pedido = pedidoRepository.findById(itemPedidoModelDto.getPedidoId())
                 .orElseThrow(() -> new ResourceNotFoundException("pedido nao encontrado"));
 
-        ItemPedidoModel ItemPedido = ItemPedidoModel.builder()
-                .produto(produto)
-                .pedido(pedido)
-                .quantidade(itemPedidoModelDto.getQuantidade())
-                .subTotal(produto.getPreco().multiply(BigDecimal.valueOf(itemPedidoModelDto.getQuantidade())))
-                .preco(produto.getPreco())
-                .build();
+        ItemPedidoModel ItemPedido = itemPedidoRepository.findByPedidoIdAndProdutoId(pedido.getId(), produto.getId())
+                        .orElseGet(() -> {ItemPedidoModel novoitem = ItemPedidoModel.builder()
+                                .produto(produto)
+                                .pedido(pedido)
+                                .quantidade(itemPedidoModelDto.getQuantidade())
+                                .subTotal(produto.getPreco().multiply(BigDecimal.valueOf(itemPedidoModelDto.getQuantidade())))
+                                .preco(produto.getPreco())
+                                .build();
 
-        pedido.adcionarItem(ItemPedido);
-        produto.adcionarItemProduto(ItemPedido);
+                            return novoitem;
+                        });
+
+
         produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - ItemPedido.getQuantidade());
         pedido.setStatus("ABERTO");
+        ItemPedido.setNomeProduto(itemPedidoModelDto.getNomeProduto());
 
         BigDecimal total = pedido.getItens().stream()
                 .map(ItemPedidoModel::getSubTotal)

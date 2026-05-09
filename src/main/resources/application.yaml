@@ -7,12 +7,15 @@ spring:
       indent_output: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/miniEcomerce?createDatabaseIfNotExist=true
+    url: ${DATABASE_LH}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
   flyway:
-    enabled: false
+    enabled: true
+    url: ${DATABASE_LH}
+    user: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
   jpa:
     generate-ddl: true

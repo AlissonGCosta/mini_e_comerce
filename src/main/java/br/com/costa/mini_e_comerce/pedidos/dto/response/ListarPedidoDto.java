@@ -1,6 +1,7 @@
 package br.com.costa.mini_e_comerce.pedidos.dto.response;
 
 import br.com.costa.mini_e_comerce.cliente.model.ClienteModel;
+import br.com.costa.mini_e_comerce.item_pedido.dtos.respone.ItemDoPedidoResponse;
 import br.com.costa.mini_e_comerce.item_pedido.model.ItemPedidoModel;
 import lombok.*;
 
@@ -21,7 +22,7 @@ public class ListarPedidoDto {
     private LocalDate dataPedido;
     private String status;
     private BigDecimal total;
-    private List<ItemPedidoModel> itens;
+    private List<ItemDoPedidoResponse> itens;
 
 
 
